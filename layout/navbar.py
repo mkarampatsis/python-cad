@@ -2,9 +2,15 @@ import tkinter as tk
 import ttkbootstrap as ttk
 from ttkbootstrap_icons_bs import BootstrapIcon
 
-def set_min_width(menu, chars): 
-  menu.update_idletasks() 
-  menu.config(width=chars)
+def add_item(menu, label, cmd=None): 
+  menu.add_command( 
+    label=label, 
+    command=cmd, 
+    background="red", 
+    foreground="black", 
+    activebackground="#c8c8c8", 
+    activeforeground="black" 
+  )
 
 def build_navbar(root):
   navbar = ttk.Frame(root, padding=5)
@@ -21,13 +27,6 @@ def build_navbar(root):
     font="-size 11"
   )
   navbar.configure(style="Navbar.TFrame")
-
-  # Override menu colors
-  root.option_add("*Menu.background", "#e0e0e0")
-  root.option_add("*Menu.foreground", "black")
-  root.option_add("*Menu.activeBackground", "#c8c8c8")
-  root.option_add("*Menu.activeForeground", "black")
-  root.option_add("*Menu.relief", "flat")
 
   menu_items = [
     ("File", "folder-check"),
@@ -58,17 +57,61 @@ def build_navbar(root):
     mb.image = icon
     mb.pack(side="left", padx=2)
 
-    
     if label == "File":
-      file_menu = tk.Menu(mb, tearoff=0)
-      file_menu.add_command(label="New", command = None) 
-      file_menu.add_command(label="Open", command = None) 
+      file_menu = tk.Menu(
+        mb, 
+        tearoff=0,
+        bg="red", 
+        fg="black", 
+        activebackground="#c8c8c8", 
+        activeforeground="black", 
+        borderwidth=0
+      )
+      add_item(file_menu, "New") 
+      add_item(file_menu, "Open") 
+      add_item(file_menu, "Open without images") 
+      add_item(file_menu, "Save") 
+      add_item(file_menu, "Save as") 
+      add_item(file_menu, "Close") 
       file_menu.add_separator() 
-      file_menu.add_command(label="Exit", command = root.destroy)
-      # Force minimum width 
-      # file_menu.config(postcommand=lambda m=file_menu: set_min_width(m, 50))
-      file_menu.config(width=50)
+      add_item(file_menu, "Insert") 
+      add_item(file_menu, "Export Image") 
+      add_item(file_menu, "Plot to PDF") 
+      add_item(file_menu, "Plot") 
+      add_item(file_menu, "Purge") 
+      file_menu.add_separator() 
+      add_item(file_menu, "Exit", root.destroy) 
       mb["menu"] = file_menu
+     
+      # file_menu.add_command(label="New", command = None) 
+      # file_menu.add_command(label="Open", command = None)
+      # file_menu.add_command(label="Open without images", command = None)
+      # file_menu.add_command(label="Save", command = None)
+      # file_menu.add_command(label="Save as", command = None)
+      # file_menu.add_command(label="Close", command = None)
+      # file_menu.add_separator() 
+      # file_menu.add_command(label="Insert", command = None)
+      # file_menu.add_command(label="Export Image", command = None)
+      # file_menu.add_command(label="Plot to PDF", command = None) 
+      # file_menu.add_command(label="Plot", command = None) 
+      # file_menu.add_command(label="Purge", command = None) 
+      # file_menu.add_separator() 
+      # file_menu.add_command(label="Exit", command = root.destroy)
+      # mb["menu"] = file_menu
+    elif label == "Edit":
+      edit_menu = tk.Menu(mb, tearoff=0)
+      edit_menu.add_command(label="Undo", command = None)
+      edit_menu.add_command(label="Redo", command = None)
+      edit_menu.add_separator()
+      edit_menu.add_command(label="Cut", command = None)
+      edit_menu.add_command(label="Copy", command = None)
+      edit_menu.add_command(label="Copy with Base Point", command = None)
+      edit_menu.add_command(label="Paste", command = None)
+      edit_menu.add_command(label="Paste to Original Coordinates", command = None)
+      edit_menu.add_separator()
+      edit_menu.add_command(label="Select elements", command = None)
+      edit_menu.add_command(label="Background colour", command = None)
+      mb["menu"] = edit_menu
     else:
       menu = tk.Menu(mb, tearoff=0)
       menu.add_command(label=f"{label} Option 1")
