@@ -9,7 +9,7 @@ class CADApp:
   def __init__(self):
     self.root = ttk.Window(
       title="Engineering CAD",
-      # themename="superhero",
+      themename="superhero",
       size=(1550, 900)
     )
 

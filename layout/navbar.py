@@ -6,7 +6,7 @@ def add_item(menu, label, cmd=None):
   menu.add_command( 
     label=label, 
     command=cmd, 
-    background="red", 
+    background="#e0e0e0", 
     foreground="black", 
     activebackground="#c8c8c8", 
     activeforeground="black" 
@@ -33,6 +33,7 @@ def build_navbar(root):
     ("Edit", "credit-card-2-back"),
     ("View", "eye"),
     ("Image Format", "file-earmark-image"),
+    ("Format", "filetype-css"),
     ("Tools", "wrench-adjustable"),
     ("Draw", "pencil"),
     ("Engineering", "gear"),
@@ -57,66 +58,150 @@ def build_navbar(root):
     mb.image = icon
     mb.pack(side="left", padx=2)
 
-    if label == "File":
-      file_menu = tk.Menu(
-        mb, 
-        tearoff=0,
-        bg="red", 
-        fg="black", 
-        activebackground="#c8c8c8", 
-        activeforeground="black", 
-        borderwidth=0
-      )
-      add_item(file_menu, "New") 
-      add_item(file_menu, "Open") 
-      add_item(file_menu, "Open without images") 
-      add_item(file_menu, "Save") 
-      add_item(file_menu, "Save as") 
-      add_item(file_menu, "Close") 
-      file_menu.add_separator() 
-      add_item(file_menu, "Insert") 
-      add_item(file_menu, "Export Image") 
-      add_item(file_menu, "Plot to PDF") 
-      add_item(file_menu, "Plot") 
-      add_item(file_menu, "Purge") 
-      file_menu.add_separator() 
-      add_item(file_menu, "Exit", root.destroy) 
-      mb["menu"] = file_menu
-     
-      # file_menu.add_command(label="New", command = None) 
-      # file_menu.add_command(label="Open", command = None)
-      # file_menu.add_command(label="Open without images", command = None)
-      # file_menu.add_command(label="Save", command = None)
-      # file_menu.add_command(label="Save as", command = None)
-      # file_menu.add_command(label="Close", command = None)
-      # file_menu.add_separator() 
-      # file_menu.add_command(label="Insert", command = None)
-      # file_menu.add_command(label="Export Image", command = None)
-      # file_menu.add_command(label="Plot to PDF", command = None) 
-      # file_menu.add_command(label="Plot", command = None) 
-      # file_menu.add_command(label="Purge", command = None) 
-      # file_menu.add_separator() 
-      # file_menu.add_command(label="Exit", command = root.destroy)
-      # mb["menu"] = file_menu
-    elif label == "Edit":
-      edit_menu = tk.Menu(mb, tearoff=0)
-      edit_menu.add_command(label="Undo", command = None)
-      edit_menu.add_command(label="Redo", command = None)
-      edit_menu.add_separator()
-      edit_menu.add_command(label="Cut", command = None)
-      edit_menu.add_command(label="Copy", command = None)
-      edit_menu.add_command(label="Copy with Base Point", command = None)
-      edit_menu.add_command(label="Paste", command = None)
-      edit_menu.add_command(label="Paste to Original Coordinates", command = None)
-      edit_menu.add_separator()
-      edit_menu.add_command(label="Select elements", command = None)
-      edit_menu.add_command(label="Background colour", command = None)
-      mb["menu"] = edit_menu
-    else:
-      menu = tk.Menu(mb, tearoff=0)
-      menu.add_command(label=f"{label} Option 1")
-      menu.add_command(label=f"{label} Option 2")
-      menu.add_separator()
-      menu.add_command(label=f"{label} Settings")
+    match label:
+      case 'File':
+        file_menu = tk.Menu(mb,tearoff=0)
+        add_item(file_menu, "New", None) 
+        add_item(file_menu, "Open", None) 
+        add_item(file_menu, "Open without images", None) 
+        add_item(file_menu, "Save", None) 
+        add_item(file_menu, "Save as", None) 
+        add_item(file_menu, "Close", None) 
+        file_menu.add_separator(background="#e0e0e0") 
+        add_item(file_menu, "Insert", None) 
+        add_item(file_menu, "Export Image", None) 
+        add_item(file_menu, "Plot to PDF", None) 
+        add_item(file_menu, "Plot", None) 
+        add_item(file_menu, "Purge", None) 
+        file_menu.add_separator(background="#e0e0e0") 
+        add_item(file_menu, "Exit", root.destroy) 
+        mb["menu"] = file_menu
+      case "Edit":
+        edit_menu = tk.Menu(mb, tearoff=0)
+        add_item(edit_menu, "Undo", None)
+        add_item(edit_menu, "Redo", None)
+        edit_menu.add_separator(background="#e0e0e0")
+        add_item(edit_menu, "Cut", None)
+        add_item(edit_menu, "Copy", None)
+        add_item(edit_menu, "Copy with Base Point", None)
+        add_item(edit_menu, "Paste", None)
+        add_item(edit_menu, "Paste to Original Coordinates", None)
+        edit_menu.add_separator(background="#e0e0e0")
+        add_item(edit_menu, "Select elements", None)
+        add_item(edit_menu, "Background colour", None)
+        mb["menu"] = edit_menu
+      case "View":
+        view_menu = tk.Menu(mb, tearoff=0)
+        add_item(view_menu, "Zoom Window", None)
+        add_item(view_menu, "Zoom All", None)
+        add_item(view_menu, "Zoom Selection", None)
+        add_item(view_menu, "Zoom Relative", None)
+        add_item(view_menu, "Zoom Real Time", None)
+        view_menu.add_separator(background="#e0e0e0")
+        add_item(view_menu, "Pan Relative", None)
+        add_item(view_menu, "Pan Real Time", None)
+        view_menu.add_separator(background="#e0e0e0")
+        add_item(view_menu, "Redraw", None)
+        add_item(view_menu, "Regen", None)
+        mb["menu"] = view_menu        
+      case "Image Format":
+        img_menu = tk.Menu(mb, tearoff=0)
+        add_item(img_menu, "Insert Raster Image", None)        
+        add_item(img_menu, "Import GeoTIFF", None)
+        add_item(img_menu, "Import tfw Image", None)
+        add_item(img_menu, "Import log Image", None)
+        add_item(img_menu, "Import Cadastre", None)
+        add_item(img_menu, "Import tiled Image", None)
+        add_item(img_menu, "Scan Image", None)
+        add_item(img_menu, "Image frame", None)
+        img_menu.add_separator(background="#e0e0e0")
+        add_item(img_menu, "Unload images", None)
+        add_item(img_menu, "Locate image file", None)
+        add_item(img_menu, "Locate image directory", None)
+        add_item(img_menu, "Embed images", None)
+        img_menu.add_separator(background="#e0e0e0")
+        add_item(img_menu, "Clip image", None)
+        add_item(img_menu, "Image &Render", None)
+        mb["menu"] = img_menu
+      case "Format":
+        format_menu = tk.Menu(mb, tearoff=0)
+        add_item(format_menu, "Layer", None)        
+        add_item(format_menu, "Text Style", None)
+        add_item(format_menu, "Units", None)
+        mb["menu"] = format_menu
+      case "Tools":   
+        tools_menu = tk.Menu(mb, tearoff=0)
+        add_item(tools_menu, "Measure", None)        
+        add_item(tools_menu, "Dimension", None)
+        add_item(tools_menu, "Annotate", None)
+        add_item(tools_menu, "Layers", None)
+        mb["menu"] = tools_menu
+      case "Draw":
+        draw_menu = tk.Menu(mb, tearoff=0)
+        add_item(draw_menu, "Line", None)
+        add_item(draw_menu, "Circle", None)           
+        add_item(draw_menu, "Arc", None)
+        add_item(draw_menu, "Ellipse", None)
+        add_item(draw_menu, "Polyline", None)
+        add_item(draw_menu, "Spline", None)       
+        add_item(draw_menu, "Text", None)
+        mb["menu"] = draw_menu
+      case "Engineering":
+        eng_menu = tk.Menu(mb, tearoff=0)
+        add_item(eng_menu, "Structural Analysis", None)
+        add_item(eng_menu, "Finite Element Analysis", None)   
+        add_item(eng_menu, "Thermal Analysis", None)
+        add_item(eng_menu, "Fluid Dynamics", None)
+        add_item(eng_menu, "Material Properties", None)             
+        mb["menu"] = eng_menu 
+      case "Photogrammetry":
+        photo_menu = tk.Menu(mb, tearoff=0)       
+        add_item(photo_menu, "Image Alignment", None)         
+        add_item(photo_menu, "Dense Point Cloud", None)
+        add_item(photo_menu, "Mesh Generation", None)
+        add_item(photo_menu, "Texture Mapping", None)
+        add_item(photo_menu, "Orthophoto Generation", None)
+        mb["menu"] = photo_menu
+      case "Modify":
+        modify_menu = tk.Menu(mb, tearoff=0)
+        add_item(modify_menu, "Move", None)
+        add_item(modify_menu, "Copy", None)
+        add_item(modify_menu, "Rotate", None)
+        add_item(modify_menu, "Scale", None)
+        add_item(modify_menu, "Mirror", None)     
+        add_item(modify_menu, "Trim", None)
+        add_item(modify_menu, "Extend", None)         
+        add_item(modify_menu, "Offset", None)           
 
-      mb["menu"] = menu
+        mb["menu"] = modify_menu
+      case "Research":
+        research_menu = tk.Menu(mb, tearoff=0)
+        add_item(research_menu, "CAD Research Papers", None)
+        add_item(research_menu, "CAD Datasets", None)
+        add_item(research_menu, "CAD Tutorials", None)
+        add_item(research_menu, "CAD Tools", None)      
+        add_item(research_menu, "CAD Communities", None)
+        mb["menu"] = research_menu        
+      case "Developer":
+        dev_menu = tk.Menu(mb, tearoff=0)
+        add_item(dev_menu, "API Documentation", None)
+        add_item(dev_menu, "Developer Tools", None)                     
+        add_item(dev_menu, "Source Code", None)
+        add_item(dev_menu, "Report a Bug", None)
+        add_item(dev_menu, "Request a Feature", None)
+        mb["menu"] = dev_menu     
+      case "Window":
+        window_menu = tk.Menu(mb, tearoff=0)
+        add_item(window_menu, "Cascade", None)      
+        add_item(window_menu, "Tile Horizontally", None)
+        add_item(window_menu, "Tile Vertically", None)
+        add_item(window_menu, "Arrange Icons", None)
+        mb["menu"] = window_menu    
+      case "Help":
+        help_menu = tk.Menu(mb, tearoff=0)
+        add_item(help_menu, "User Guide", None)
+        add_item(help_menu, "Tutorials", None)
+        add_item(help_menu, "FAQs", None)         
+        add_item(help_menu, "Contact Support", None)
+        add_item(help_menu, "About", None)
+        mb["menu"] = help_menu
