@@ -1,30 +1,71 @@
 import tkinter as tk
 import ttkbootstrap as tb
+
 from ttkbootstrap.constants import *
 
-# -------------------------------------------------
-# MAIN WINDOW
-# -------------------------------------------------
+
+# =========================================================
+# WINDOW
+# =========================================================
 app = tb.Window(themename="superhero")
-app.title("TkBootstrap Desktop App")
+
+app.title("TkBootstrap Layout")
 app.geometry("1200x700")
 
-# -------------------------------------------------
-# CUSTOM COLORS
-# -------------------------------------------------
-CANVAS_BG = "#1b222c"
-FOOTER_BG = "#0f1318"
 
-CANVAS_TEXT = "#ffffff"
+# =========================================================
+# COLORS
+# =========================================================
+MAIN_BG = "#df1e42"
+FOOTER_BG = "#11151c"
+
+MAIN_TEXT = "#ffffff"
 FOOTER_TEXT = "#00d4ff"
 
-# -------------------------------------------------
-# NAVBAR / MENU
-# -------------------------------------------------
+
+# =========================================================
+# STYLE
+# =========================================================
+style = tb.Style()
+
+# IMPORTANT:
+# Avoid names containing:
+# Canvas, Button, Label, Frame, etc
+# at the START of the style name.
+
+style.configure(
+    "MainArea.TFrame",
+    background=MAIN_BG
+)
+
+style.configure(
+    "MainArea.TLabel",
+    background=MAIN_BG,
+    foreground=MAIN_TEXT,
+    font=("Segoe UI", 22, "bold")
+)
+
+style.configure(
+    "Statusbar.TFrame",
+    background=FOOTER_BG
+)
+
+style.configure(
+    "Statusbar.TLabel",
+    background=FOOTER_BG,
+    foreground=FOOTER_TEXT,
+    font=("Consolas", 11, "bold")
+)
+
+
+# =========================================================
+# MENU BAR
+# =========================================================
 menubar = tk.Menu(app)
 
 # File Menu
 file_menu = tk.Menu(menubar, tearoff=0)
+
 file_menu.add_command(label="New")
 file_menu.add_command(label="Open")
 file_menu.add_separator()
@@ -32,128 +73,150 @@ file_menu.add_command(label="Exit", command=app.quit)
 
 # Edit Menu
 edit_menu = tk.Menu(menubar, tearoff=0)
+
 edit_menu.add_command(label="Settings")
 edit_menu.add_command(label="Preferences")
 
-# Add dropdowns
+# Add menus
 menubar.add_cascade(label="File", menu=file_menu)
 menubar.add_cascade(label="Edit", menu=edit_menu)
 
 app.config(menu=menubar)
 
-# -------------------------------------------------
-# MAIN LAYOUT CONTAINER
-# -------------------------------------------------
-main_container = tb.Frame(app)
-main_container.pack(fill=BOTH, expand=True)
 
-# Configure grid
-main_container.columnconfigure(0, weight=1)   # sidebar
-main_container.columnconfigure(1, weight=4)   # canvas
+# =========================================================
+# MAIN LAYOUT
+# =========================================================
+main_container = tb.Frame(app)
+
+main_container.pack(
+    fill=BOTH,
+    expand=True
+)
+
+# Grid configuration
+main_container.columnconfigure(0, weight=1)
+main_container.columnconfigure(1, weight=4)
 main_container.rowconfigure(0, weight=1)
 
-# -------------------------------------------------
+
+# =========================================================
 # SIDEBAR
-# -------------------------------------------------
-sidebar = tb.Frame(main_container, bootstyle="dark")
-sidebar.grid(row=0, column=0, sticky="nswe")
+# =========================================================
+sidebar = tb.Frame(
+    main_container,
+    bootstyle="dark"
+)
+
+sidebar.grid(
+    row=0,
+    column=0,
+    sticky="nswe"
+)
 
 sidebar_title = tb.Label(
     sidebar,
     text="Sidebar",
     font=("Segoe UI", 16, "bold")
 )
+
 sidebar_title.pack(pady=20)
 
-tb.Button(sidebar, text="Dashboard", bootstyle="primary").pack(
-    fill=X, padx=10, pady=5
-)
+tb.Button(
+    sidebar,
+    text="Dashboard",
+    bootstyle="primary"
+).pack(fill=X, padx=10, pady=5)
 
-tb.Button(sidebar, text="Projects", bootstyle="info").pack(
-    fill=X, padx=10, pady=5
-)
+tb.Button(
+    sidebar,
+    text="Projects",
+    bootstyle="info"
+).pack(fill=X, padx=10, pady=5)
 
-tb.Button(sidebar, text="Settings", bootstyle="warning").pack(
-    fill=X, padx=10, pady=5
-)
+tb.Button(
+    sidebar,
+    text="Settings",
+    bootstyle="warning"
+).pack(fill=X, padx=10, pady=5)
 
-# -------------------------------------------------
-# CANVAS AREA
-# -------------------------------------------------
-canvas_frame = tb.Frame(
+
+# =========================================================
+# RIGHT CONTENT AREA
+# =========================================================
+main_area = tb.Frame(
     main_container,
-    style="Canvas.TFrame"
+    style="MainArea.TFrame"
 )
-canvas_frame.grid(row=0, column=1, sticky="nswe")
 
-canvas_title = tb.Label(
-    canvas_frame,
-    text="Main Canvas Area",
-    style="Canvas.TLabel"
+main_area.grid(
+    row=0,
+    column=1,
+    sticky="nswe"
 )
-canvas_title.pack(pady=20)
 
-# Example canvas
-canvas = tk.Canvas(
-    canvas_frame,
-    bg=CANVAS_BG,
+main_title = tb.Label(
+    main_area,
+    text="Main Drawing Area",
+    style="MainArea.TLabel"
+)
+
+main_title.pack(pady=20)
+
+
+# =========================================================
+# TK CANVAS
+# =========================================================
+drawing_canvas = tk.Canvas(
+    main_area,
+    bg=MAIN_BG,
     highlightthickness=0
 )
-canvas.pack(fill=BOTH, expand=True, padx=20, pady=20)
 
-canvas.create_text(
-    200,
-    100,
-    text="Your Drawing Area",
-    fill=CANVAS_TEXT,
+drawing_canvas.pack(
+    fill=BOTH,
+    expand=True,
+    padx=20,
+    pady=20
+)
+
+drawing_canvas.create_text(
+    250,
+    120,
+    text="CAD / Drawing Canvas",
+    fill=MAIN_TEXT,
     font=("Segoe UI", 24, "bold")
 )
 
-# -------------------------------------------------
+
+# =========================================================
 # FOOTER
-# -------------------------------------------------
-footer = tb.Frame(app, style="Footer.TFrame", height=40)
-footer.pack(fill=X, side=BOTTOM)
+# =========================================================
+footer = tb.Frame(
+    app,
+    style="Statusbar.TFrame",
+    height=40
+)
+
+footer.pack(
+    side=BOTTOM,
+    fill=X
+)
 
 footer_label = tb.Label(
     footer,
     text="Status: Ready",
-    style="Footer.TLabel"
-)
-footer_label.pack(side=RIGHT, padx=20, pady=8)
-
-# -------------------------------------------------
-# CUSTOM STYLES
-# -------------------------------------------------
-style = tb.Style()
-
-# Canvas styles
-style.configure(
-    "Canvas.TFrame",
-    background=CANVAS_BG
+    style="Statusbar.TLabel"
 )
 
-style.configure(
-    "Canvas.TLabel",
-    background=CANVAS_BG,
-    foreground=CANVAS_TEXT,
-    font=("Segoe UI", 22, "bold")
+footer_label.pack(
+    side=RIGHT,
+    padx=20,
+    pady=8
 )
 
-# Footer styles
-style.configure(
-    "Footer.TFrame",
-    background=FOOTER_BG
-)
 
-style.configure(
-    "Footer.TLabel",
-    background=FOOTER_BG,
-    foreground=FOOTER_TEXT,
-    font=("Consolas", 11, "bold")
-)
-
-# -------------------------------------------------
-# RUN
-# -------------------------------------------------
+# =========================================================
+# START
+# =========================================================
 app.mainloop()
