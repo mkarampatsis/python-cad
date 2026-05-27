@@ -10,7 +10,7 @@ class CADApp:
     self.root = ttk.Window(
       title="Engineering CAD",
       themename="superhero",
-      size=(1550, 900)
+      size=(1570, 900)
     )
 
     # NAVBAR (top) 
@@ -37,4 +37,4 @@ class CADApp:
     build_canvas_area(body)
 
 if __name__ == "__main__":
-    CADApp()
+  CADApp()

@@ -9,7 +9,7 @@ def add_item(menu, label, cmd=None):
     background="#e0e0e0", 
     foreground="black", 
     activebackground="#c8c8c8", 
-    activeforeground="black" 
+    activeforeground="black"
   )
 
 def build_navbar(root):

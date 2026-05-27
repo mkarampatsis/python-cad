@@ -1,8 +1,7 @@
 import ttkbootstrap as ttk
+import tkinter as tk
 
 def build_footer(parent):
-  # footer = ttk.Frame(parent, padding=5)
-  # footer.pack(fill="x")
   footer = ttk.Frame(parent, padding=5) 
   footer.pack(side="bottom", fill="x")
 
