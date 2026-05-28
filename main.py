@@ -10,7 +10,7 @@ class CADApp:
     self.root = ttk.Window(
       title="Engineering CAD",
       themename="superhero",
-      size=(1570, 900)
+      size=(1680, 900)
     )
 
     # NAVBAR (top) 
@@ -19,6 +19,7 @@ class CADApp:
     # MAIN BODY (middle) 
     self.main = ttk.Frame(self.root) 
     self.main.pack(fill=BOTH, expand=True) 
+     
     self.build_body() 
     
     # FOOTER (bottom) 

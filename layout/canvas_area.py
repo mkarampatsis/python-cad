@@ -16,24 +16,25 @@ def build_canvas_area(parent):
   style = ttk.Style()
   colors = style.colors
 
-  # style.configure("Footer.Text", background="#d35400")
-  # style.configure(
-  #   "Footer.TMenubutton",
-  #   background="#d35400",
-  #   foreground="white",
-  #   padding=(2, 10),
-  #   font="-size 11"
-  # )
-  # footer.configure(style="Footer.TText")
+  canvas = tk.Canvas(
+    frame,
+    background=colors.secondary,
+    # DEFAULT BORDER
+    bd=2,
+    relief="solid",
+    # BORDER SIZE
+    highlightthickness=1,
+    # BORDER COLOR
+    highlightbackground="#444444",
+    # FOCUS COLOR
+    highlightcolor="#00d4ff"
+  )
 
-  canvas = tk.Canvas(frame)
   canvas.pack(
     fill="both", 
     expand=True,
     padx=20,
-    pady=20   
+    pady=(20,0)    
   )
   
-  canvas.configure(
-    background=colors.light, 
-  )
+  canvas.focus_set()

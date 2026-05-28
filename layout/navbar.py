@@ -2,6 +2,9 @@ import tkinter as tk
 import ttkbootstrap as ttk
 from ttkbootstrap_icons_bs import BootstrapIcon
 
+# =========================================================
+# HELPERS
+# =========================================================
 def add_item(menu, label, cmd=None): 
   menu.add_command( 
     label=label, 
@@ -12,283 +15,379 @@ def add_item(menu, label, cmd=None):
     activeforeground="black"
   )
 
+def create_menu(mb, items):
+  """
+  Creates a tk.Menu from a list structure.
+
+  Example:
+  [
+      ("New", callback),
+      ("Open", callback),
+      "---",
+      ("Exit", callback)
+  ]
+  """
+
+  menu = tk.Menu(mb,tearoff=0)
+
+  for item in items:
+
+    # Separator
+    if item == "---":
+      menu.add_separator(
+        background="#e0e0e0"
+      )
+
+    # Normal menu item
+    else:
+      label, cmd = item
+
+      add_item(
+        menu,
+        label,
+        cmd
+      )
+
+  mb["menu"] = menu
+
+# =========================================================
+# NAVBAR
+# =========================================================
 def build_navbar(root):
   navbar = ttk.Frame(root, padding=5)
-  # navbar.pack(fill="x")
   navbar.pack(side="top", fill="x")
 
-  style = ttk.Style()
-  style.configure("Navbar.TFrame", background="#d35400")
+  # =====================================================
+  # STYLE
+  # =====================================================
+  style = root.style
+  colors = style.colors
+  
+  style.configure("Navbar.TFrame", background=colors.dark)
   style.configure(
     "Navbar.TMenubutton",
-    background="#d35400",
+    background=colors.primary,
     foreground="white",
     padding=(2, 10),
     font="-size 11"
   )
   navbar.configure(style="Navbar.TFrame")
+  
+# =====================================================
+# CENTER CONTAINER
+# =====================================================
+  center_frame = ttk.Frame(
+    navbar,
+    style="Navbar.TFrame"
+  )
 
-  menu_items = [
-    ("File", "folder-check"),
-    ("Edit", "credit-card-2-back"),
-    ("View", "eye"),
-    ("Image Format", "file-earmark-image"),
-    ("Format", "filetype-css"),
-    ("Tools", "wrench-adjustable"),
-    ("Draw", "pencil"),
-    ("Engineering", "gear"),
-    ("Photogrammetry", "camera-video"),
-    ("Modify", "wrench-adjustable-circle"),
-    ("Research", "search"),
-    ("Developer", "file-code"),
-    ("Window", "layout-text-window-reverse"),
-    ("Help", "question-circle")
-  ]
+  center_frame.pack(
+    anchor="center"
+  )
 
-  for label, icon_name in menu_items:
-    icon = BootstrapIcon(icon_name, size=20, color="#ffffff")
+
+  # =====================================================
+  # MENU DEFINITIONS
+  # =====================================================
+  menus = {
+    "File": {
+      "icon": "folder-check",
+      "items": [
+        ("New", None),
+        ("Open", None),
+        ("Open without images", None),
+        ("Save", None),
+        ("Save as", None),
+        ("Close", None),
+        "---",
+        ("Insert", None),
+        ("Export Image", None),
+        ("Plot to PDF", None),
+        ("Plot", None),
+        ("Purge", None),
+        "---",
+        ("Exit", root.destroy)
+      ]
+    },
+    "Edit": {
+      "icon": "credit-card-2-back",
+      "items": [
+        ("Undo", None),
+        ("Redo", None),
+        "---",
+        ("Cut", None),
+        ("Copy", None),
+        ("Copy with Base Point", None),
+        ("Paste", None),
+        ("Paste to Original Coordinates", None),
+        "---",
+        ("Select", None),
+        "---",
+        ("Background colour", None),
+        ("Encoding", None)
+      ]
+    },
+
+    "View": {
+      "icon": "eye",
+      "items": [
+        ("Zoom Window", None),
+        ("Zoom All", None),
+        ("Zoom Selection", None),
+        ("Zoom Relative", None),
+        ("Zoom Real Time", None),
+        "---",
+        ("Pan Relative", None),
+        ("Pan Real Time", None),
+        "---",
+        ("Redraw", None),
+        ("Regen", None)
+      ]
+    },
+    "Image Format": {
+      "icon": "file-earmark-image",
+      "items": [
+        ("Insert Raster Image", None),
+        ("Insert GOI Frame", None),
+        ("Import GeoTIFF", None),
+        ("Import tfw/j2w Image", None),
+        ("Import log Image", None),
+        ("Import Cadastre", None),
+        ("Import tiled Image", None),
+        ("Import/convert TerraSAR Image", None),
+        ("Scan Image", None),
+        ("Image frame", None),
+        "---",
+        ("Unload images", None),
+        ("Load images", None),
+        ("Locate image file", None),
+        ("Locate image directory", None),
+        ("Embed images", None),
+        "---",
+        ("Clip image", None),
+        ("Image Render", None)
+      ]
+    },
+    "Format": {
+      "icon": "filetype-css",
+      "items": [
+        ("Layer", None),
+        ("Text Style", None),
+        ("Dimension Style", None),
+        ("Units", None)
+      ]
+    },
+    "Tools": {
+      "icon": "wrench-adjustable",
+      "items": [
+        ("Distance", None),
+        ("Area", None),
+        ("Angle", None),
+        ("Id Point", None),
+        ("List", None),
+        ("Elevation", None),
+        ("Elevation (higher imensions)", None),
+        "---",
+        ("Drafting Settings", None),
+        ("Find text", None),
+        "---",
+        ("Find centroid", None),
+        ("Find convex hull", None),
+        ("Simplify line", None),
+        ("Interpolate line", None),
+        ("Optimum line", None),
+        "---",
+        ("Run script", None)
+      ]
+    },
+    "Draw": {
+      "icon": "pencil",
+      "items": [
+        ("Line", None),
+        ("Rectangle", None),
+        ("Polygon", None),
+        ("Circle", None),
+        ("Arc", None),
+        ("Ellipse", None),
+        ("Point", None),
+        ("Text", None),
+        ("Spline", None),
+        "---",
+        ("Named Point", None),
+        ("Point from dist", None),
+        ("Road", None),
+        ("Boundary hatch", None),
+        ("Hatch Open", None),
+        "---",
+        ("Dimension aligned", None),
+        "---",
+        ("To spline", None),
+        ("To curve", None),
+        ("Decurve", None),
+        ("To polygon", None),
+        ("BIM - Column", None)
+      ]
+    },
+    "Engineering": {
+      "icon": "gear",
+      "items": [
+        ("Grid", None),
+        ("Trace", None),
+        ("Fraw Greece", None),
+        ("Global points", None),
+        ("Export global points", None),
+        "---",
+        ("Geodetic Projection", None),
+        ("Load DEMs", None),
+        ("Manage DEMs", None),
+        ("Locate DEM directory", None),
+        ("Create DTM", None),
+        ("DTM/DEM Z", None),
+        ("Add Z to Points", None),
+        ("Add Z to Lines", None),
+        ("Triangulations", None),
+        "---",
+        ("Quick Profile", None),
+        ("Isoclinal", None),
+        ("Interchange", None),
+        "---",
+        ("Bio azimuth", None),             
+        ("LOcate roads of slope", None),
+        "---",
+        ("Stairs", None)
+      ]
+    },
+    "Photogrammetry": {
+      "icon": "camera-video",
+      "items": [
+        ("INTERIOR ORIENTATION (mm)", None),
+        ("INTERIOR ORIENTATION (pixels)", None),
+        ("Camera management", None),
+        "---",
+        ("Rotate Image 90 deg counterclockwise", None),
+        ("Rotate Image 180 deg", None),
+        ("Rotate Image 270 deg counterclockwise", None),
+        "---",
+        ("Brighten Image (Gray+)", None),
+        ("Darken Image (Gray-)", None),
+        ("Reset Image brightness", None),
+        "---",
+        ("Toggle coordinates on/off (F6)", None),
+        ("Toggle coordinates system (F7)", None),
+        "---",
+        ("Model definition", None)
+      ]
+    },
+    "Modify": {
+      "icon": "wrench-adjustable-circle",
+      "items": [
+        ("Erase", None),
+        ("Rotate", None),
+        ("Scale", None),
+        ("Move", None),
+        ("Copy", None),
+        ("Mirror", None),
+        ("Point Mirror", None),
+        "---",
+        ("Line", None),
+        ("Offset", None),
+        ("Break", None),
+        ("Trim", None),
+        ("Extend", None),
+        ("Lengthen", None),
+        ("Fillet", None),
+        ("Explode", None),
+        ("Reverse", None),
+        ("Edit Text", None),
+        ("Edit named Point", None),
+        ("Convert to named Point", None),
+        "---",
+        ("Change layer", None),
+        ("Change elevation", None),
+        ("Change elevation (higher dim)", None),
+        ("Change contour line elevation", None)
+      ]
+    },
+    "Research": {
+      "icon": "search",
+      "items": [
+        ("Mark Region", None),
+        ("Edit Region", None),
+        "---",
+        ("Floor plan", None),
+        ("Bio city plan", None),
+        ("Show dfr coordinates", None),
+        ("Εισαγωγή μετρήσεων θερμοϋγρόμετρου", None),
+        "---",
+        ("BIM Column Settings", None)
+      ]
+    },
+    "Developer": {
+      "icon": "file-code",
+      "items": [
+        ("Show font", None),
+        ("Show dimensions", None),
+        ("Save CMD text", None),
+        ("Translation report", None),
+        ("Show handles", None),
+        "---",
+        ("Fractal demo", None),
+        "---",
+        ("Run tests", None)
+      ]
+    },
+    "Developer": {
+      "icon": "file-code",
+      "items": [
+        ("Show font", None),
+        ("Show dimensions", None),
+        ("Save CMD text", None),
+        ("Translation report", None),
+        ("Show handles", None),
+        "---",
+        ("Fractal demo", None),
+        "---",
+        ("Run tests", None)
+      ]
+    },
+    "Window": {
+      "icon": "layout-text-window-reverse",
+      "items": [
+        ("ThanCad", None)
+      ]
+    },
+    "Help": {
+      "icon": "question-circle",
+      "items": [
+        ("Introduction", None),
+        ("GPL", None),
+        ("Language", None),
+        ("About", None)
+      ]
+    }
+  }
+  
+  # =====================================================
+  # BUILD MENUS
+  # =====================================================
+  for label, config in menus.items():
+
+    icon = BootstrapIcon(
+      config["icon"],
+      size=20,
+      color="#ffffff"
+    )
 
     mb = ttk.Menubutton(
-      navbar,
+      center_frame,
       text=label,
       image=icon,
       compound="left",
       style="Navbar.TMenubutton"
     )
+
     mb.image = icon
+
     mb.pack(side="left", padx=2)
 
-    match label:
-      case 'File':
-        file_menu = tk.Menu(mb,tearoff=0)
-        add_item(file_menu, "New", None) 
-        add_item(file_menu, "Open", None) 
-        add_item(file_menu, "Open without images", None) 
-        add_item(file_menu, "Save", None) 
-        add_item(file_menu, "Save as", None) 
-        add_item(file_menu, "Close", None) 
-        file_menu.add_separator(background="#e0e0e0") 
-        add_item(file_menu, "Insert", None) 
-        add_item(file_menu, "Export Image", None) 
-        add_item(file_menu, "Plot to PDF", None) 
-        add_item(file_menu, "Plot", None) 
-        add_item(file_menu, "Purge", None) 
-        file_menu.add_separator(background="#e0e0e0") 
-        add_item(file_menu, "Exit", root.destroy) 
-        mb["menu"] = file_menu
-      case "Edit":
-        edit_menu = tk.Menu(mb, tearoff=0)
-        add_item(edit_menu, "Undo", None)
-        add_item(edit_menu, "Redo", None)
-        edit_menu.add_separator(background="#e0e0e0")
-        add_item(edit_menu, "Cut", None)
-        add_item(edit_menu, "Copy", None)
-        add_item(edit_menu, "Copy with Base Point", None)
-        add_item(edit_menu, "Paste", None)
-        add_item(edit_menu, "Paste to Original Coordinates", None)
-        edit_menu.add_separator(background="#e0e0e0")
-        add_item(edit_menu, "Select", None)
-        edit_menu.add_separator(background="#e0e0e0")
-        add_item(edit_menu, "Background colour", None)
-        add_item(edit_menu, "Encoding", None)
-        mb["menu"] = edit_menu
-      case "View":
-        view_menu = tk.Menu(mb, tearoff=0)
-        add_item(view_menu, "Zoom Window", None)
-        add_item(view_menu, "Zoom All", None)
-        add_item(view_menu, "Zoom Selection", None)
-        add_item(view_menu, "Zoom Relative", None)
-        add_item(view_menu, "Zoom Real Time", None)
-        view_menu.add_separator(background="#e0e0e0")
-        add_item(view_menu, "Pan Relative", None)
-        add_item(view_menu, "Pan Real Time", None)
-        view_menu.add_separator(background="#e0e0e0")
-        add_item(view_menu, "Redraw", None)
-        add_item(view_menu, "Regen", None)
-        mb["menu"] = view_menu        
-      case "Image Format":
-        img_menu = tk.Menu(mb, tearoff=0)
-        add_item(img_menu, "Insert Raster Image", None)
-        add_item(img_menu, "Insert GOI Frame", None)
-        add_item(img_menu, "Import GeoTIFF", None)
-        add_item(img_menu, "Import tfw/j2w Image", None)
-        add_item(img_menu, "Import log Image", None)
-        add_item(img_menu, "Import Cadastre", None)
-        add_item(img_menu, "Import tiled Image", None)
-        add_item(img_menu, "Import/convert TerraSAR Image", None)
-        add_item(img_menu, "Scan Image", None)
-        add_item(img_menu, "Image frame", None)
-        img_menu.add_separator(background="#e0e0e0")
-        add_item(img_menu, "Unload images", None)
-        add_item(img_menu, "Load images", None)
-        add_item(img_menu, "Locate image file", None)
-        add_item(img_menu, "Locate image directory", None)
-        add_item(img_menu, "Embed images", None)
-        img_menu.add_separator(background="#e0e0e0")
-        add_item(img_menu, "Clip image", None)
-        add_item(img_menu, "Image Render", None)
-        mb["menu"] = img_menu
-      case "Format":
-        format_menu = tk.Menu(mb, tearoff=0)
-        add_item(format_menu, "Layer", None)        
-        add_item(format_menu, "Text Style", None)
-        add_item(format_menu, "Dimension Style", None)
-        add_item(format_menu, "Units", None)
-        mb["menu"] = format_menu
-      case "Tools":   
-        tools_menu = tk.Menu(mb, tearoff=0)
-        add_item(tools_menu, "Distance", None)        
-        add_item(tools_menu, "Area", None)
-        add_item(tools_menu, "Angle", None)
-        add_item(tools_menu, "Id Point", None)
-        add_item(tools_menu, "List", None)
-        add_item(tools_menu, "Elevation", None)
-        add_item(tools_menu, "Elevation (higher imensions)", None)
-        tools_menu.add_separator(background="#e0e0e0")
-        add_item(tools_menu, "Drafting Settings", None)
-        add_item(tools_menu, "Find text", None)
-        tools_menu.add_separator(background="#e0e0e0")
-        add_item(tools_menu, "Find centroid", None)
-        add_item(tools_menu, "Find convex hull", None)
-        add_item(tools_menu, "Simplify line", None)
-        add_item(tools_menu, "Interpolate line", None)
-        add_item(tools_menu, "Optimum line", None)
-        tools_menu.add_separator(background="#e0e0e0")
-        add_item(tools_menu, "Run script", None)
-        mb["menu"] = tools_menu
-      case "Draw":
-        draw_menu = tk.Menu(mb, tearoff=0)
-        add_item(draw_menu, "Line", None)
-        add_item(draw_menu, "Rectangle", None)           
-        add_item(draw_menu, "Polygon", None)
-        add_item(draw_menu, "Circle", None)
-        add_item(draw_menu, "Arc", None)
-        add_item(draw_menu, "Ellipse", None)       
-        add_item(draw_menu, "Point", None)
-        add_item(draw_menu, "Text", None)
-        add_item(draw_menu, "Spline", None)
-        draw_menu.add_separator(background="#e0e0e0")
-        add_item(draw_menu, "Named Point", None)
-        add_item(draw_menu, "Point from dist", None)
-        add_item(draw_menu, "Road", None)
-        add_item(draw_menu, "Boundary hatch", None)
-        add_item(draw_menu, "Hatch Open", None)
-        draw_menu.add_separator(background="#e0e0e0")
-        add_item(draw_menu, "Dimension aligned", None)
-        draw_menu.add_separator(background="#e0e0e0")
-        add_item(draw_menu, "To spline", None)
-        add_item(draw_menu, "To curve", None)
-        add_item(draw_menu, "Decurve", None)
-        add_item(draw_menu, "To polygon", None)
-        add_item(draw_menu, "To polygon", None)
-        add_item(draw_menu, "BIM - Column", None)
-        mb["menu"] = draw_menu
-      case "Engineering":
-        eng_menu = tk.Menu(mb, tearoff=0)
-        add_item(eng_menu, "Grid", None)
-        add_item(eng_menu, "Trace", None)
-        add_item(eng_menu, "Fraw Greece", None)
-        add_item(eng_menu, "Global points", None)
-        add_item(eng_menu, "Export global points", None)
-        eng_menu.add_separator(background="#e0e0e0")
-        add_item(eng_menu, "Geodetic Projection", None)
-        add_item(eng_menu, "Load DEMs", None)
-        add_item(eng_menu, "Manage DEMs", None)
-        add_item(eng_menu, "Locate DEM directory", None)
-        add_item(eng_menu, "Create DTM", None)
-        add_item(eng_menu, "DTM/DEM Z", None)
-        add_item(eng_menu, "Add Z to Points", None)
-        add_item(eng_menu, "Add Z to Lines", None)
-        add_item(eng_menu, "Triangulations", None)
-        eng_menu.add_separator(background="#e0e0e0")
-        add_item(eng_menu, "Quick Profile", None)
-        add_item(eng_menu, "Isoclinal", None)
-        add_item(eng_menu, "Interchange", None)
-        eng_menu.add_separator(background="#e0e0e0")
-        add_item(eng_menu, "Bio azimuth", None)             
-        add_item(eng_menu, "LOcate roads of slope", None)
-        eng_menu.add_separator(background="#e0e0e0")
-        add_item(eng_menu, "Stairs", None)
-        mb["menu"] = eng_menu 
-      case "Photogrammetry":
-        photo_menu = tk.Menu(mb, tearoff=0)       
-        add_item(photo_menu, "INTERIOR ORIENTATION (mm)", None)
-        add_item(photo_menu, "INTERIOR ORIENTATION (pixels)", None)
-        add_item(photo_menu, "Camera management", None)
-        photo_menu.add_separator(background="#e0e0e0")         
-        add_item(photo_menu, "Rotate Image 90 deg counterclockwise", None)
-        add_item(photo_menu, "Rotate Image 180 deg", None)
-        add_item(photo_menu, "Rotate Image 270 deg counterclockwise", None)
-        photo_menu.add_separator(background="#e0e0e0")
-        add_item(photo_menu, "Brighten Image (Gray+)", None)
-        add_item(photo_menu, "Darken Image (Gray-)", None)
-        add_item(photo_menu, "Reset Image brightness", None)
-        photo_menu.add_separator(background="#e0e0e0")
-        add_item(photo_menu, "Toggle coordinates on/off (F6)", None)
-        add_item(photo_menu, "Toggle coordinates system (F7)", None)
-        photo_menu.add_separator(background="#e0e0e0")
-        add_item(photo_menu, "Model definition", None)
-        mb["menu"] = photo_menu
-      case "Modify":
-        modify_menu = tk.Menu(mb, tearoff=0)
-        add_item(modify_menu, "Erase", None)
-        add_item(modify_menu, "Rotate", None)
-        add_item(modify_menu, "Scale", None)
-        add_item(modify_menu, "Move", None)
-        add_item(modify_menu, "Copy", None)
-        add_item(modify_menu, "Mirror", None)
-        add_item(modify_menu, "Point Mirror", None)
-        modify_menu.add_separator(background="#e0e0e0")
-        add_item(modify_menu, "Line", None)
-        add_item(modify_menu, "Offset", None)
-        add_item(modify_menu, "Break", None)
-        add_item(modify_menu, "Trim", None)
-        add_item(modify_menu, "Extend", None)
-        add_item(modify_menu, "Lengthen", None)
-        add_item(modify_menu, "Fillet", None)
-        add_item(modify_menu, "Explode", None)
-        add_item(modify_menu, "Reverse", None)
-        add_item(modify_menu, "Edit Text", None)
-        add_item(modify_menu, "Edit named Point", None)
-        add_item(modify_menu, "Convert to named Point", None)
-        modify_menu.add_separator(background="#e0e0e0")
-        add_item(modify_menu, "Change layer", None)
-        add_item(modify_menu, "Change elevation", None)
-        add_item(modify_menu, "Change elevation (higher dim)", None)
-        add_item(modify_menu, "Change contour line elevation", None)
-        mb["menu"] = modify_menu
-      case "Research":
-        research_menu = tk.Menu(mb, tearoff=0)
-        add_item(research_menu, "Mark Region", None)
-        add_item(research_menu, "Edit Region", None)
-        research_menu.add_separator(background="#e0e0e0")
-        add_item(research_menu, "Floor plan", None)
-        add_item(research_menu, "Bio city plan", None)
-        add_item(research_menu, "Show dfr coordinates", None)
-        add_item(research_menu, "Εισαγωγή μετρήσεων θερμοϋγρόμετρου", None)
-        research_menu.add_separator(background="#e0e0e0")
-        add_item(research_menu, "BIM Column Settings", None)
-        mb["menu"] = research_menu        
-      case "Developer":
-        dev_menu = tk.Menu(mb, tearoff=0)
-        add_item(dev_menu, "Show font", None)
-        add_item(dev_menu, "Show dimensions", None)
-        add_item(dev_menu, "Save CMD text", None)
-        add_item(dev_menu, "Translation report", None)
-        add_item(dev_menu, "Show handles", None)
-        research_menu.add_separator(background="#e0e0e0")
-        add_item(dev_menu, "Fractal demo", None)
-        research_menu.add_separator(background="#e0e0e0")        
-        add_item(dev_menu, "Run tests", None)
-        mb["menu"] = dev_menu     
-      case "Window":
-        window_menu = tk.Menu(mb, tearoff=0)
-        add_item(window_menu, "ThanCad", None)      
-        mb["menu"] = window_menu    
-      case "Help":
-        help_menu = tk.Menu(mb, tearoff=0)
-        add_item(help_menu, "Introduction", None)
-        add_item(help_menu, "GPL", None)
-        add_item(help_menu, "Language", None)         
-        add_item(help_menu, "About", None)
-        mb["menu"] = help_menu
+    create_menu(mb, config["items"])
